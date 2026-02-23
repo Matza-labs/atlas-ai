@@ -89,6 +89,25 @@ class ModernizationAdvisor:
         response = self._client.generate(SYSTEM_PROMPT, prompt)
         return response.content
 
+    def generate_executive_brief(self, report_json: dict[str, Any]) -> str:
+        """Generate a C-level executive brief optimized for non-technical stakeholders.
+
+        This produces a more structured output than generate_summary(),
+        formatted for board-level presentations.
+        """
+        executive_system = (
+            "You are PipelineAtlas Executive Advisor. "
+            "Write a concise 3-paragraph executive brief for a CTO or VP Engineering. "
+            "Paragraph 1: overall health assessment. "
+            "Paragraph 2: top 2-3 risks with business impact. "
+            "Paragraph 3: recommended next steps with estimated effort (days). "
+            "Use professional, non-technical language. No code snippets."
+        )
+        prompt = build_executive_summary_prompt(report_json)
+        response = self._client.generate(executive_system, prompt)
+        return response.content
+
     def close(self) -> None:
         """Close the LLM client."""
         self._client.close()
+
