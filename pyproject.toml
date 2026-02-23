@@ -1,0 +1,18 @@
+[project]
+name = "atlas-ai"
+version = "0.1.0"
+description = "AI Modernization Engine for PipelineAtlas"
+requires-python = ">=3.11"
+license = "MIT"
+dependencies = [
+    "atlas-sdk",
+    "httpx>=0.25",
+    "redis>=5.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+asyncio_mode = "strict"
