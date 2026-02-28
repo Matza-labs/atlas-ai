@@ -10,9 +10,23 @@ dependencies = [
     "redis>=5.0",
 ]
 
+[project.scripts]
+atlas-ai = "atlas_ai.__main__:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.1.0",
+]
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
 [tool.pytest.ini_options]
-asyncio_mode = "strict"
+testpaths = ["tests"]
