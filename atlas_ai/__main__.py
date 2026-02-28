@@ -100,6 +100,15 @@ def run_stream(advisor: ModernizationAdvisor, redis_url: str) -> None:
                             result.tokens_used,
                             result.model,
                         )
+                        from atlas_sdk.events import AITokenUsageEvent
+                        tenant_id = report_json.get("metadata", {}).get("tenant_id", "default")
+                        usage_event = AITokenUsageEvent(
+                            tenant_id=tenant_id,
+                            provider=advisor._client.config.provider,
+                            model=result.model,
+                            tokens_used=result.tokens_used
+                        )
+                        client.xadd("atlas.ai.usage", {"payload": usage_event.model_dump_json()})
                     except Exception as exc:  # noqa: BLE001
                         logger.error("Failed to analyze message %s: %s", msg_id, exc)
                     finally:
